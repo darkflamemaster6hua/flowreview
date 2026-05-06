@@ -1,4 +1,4 @@
-const CACHE_NAME = 'flowreview-v1';
+const CACHE_NAME = 'flowreview-v2';
 const ASSETS = [
   './',
   './index.html',
@@ -8,7 +8,10 @@ const ASSETS = [
   './js/storage.js',
   './js/ai.js',
   './js/app.js',
-  './manifest.json'
+  './manifest.json',
+  './data/cet4.json',
+  './data/cet6.json',
+  './data/toefl.json'
 ];
 
 self.addEventListener('install', e => {
