@@ -430,6 +430,19 @@ const App = (() => {
         </div>
       </div>
       <div class="card">
+        <h3 style="margin-bottom:4px;font-size:1rem">🤖 AI 助手设置</h3>
+        <p style="font-size:0.75rem;color:var(--text-secondary);margin-bottom:12px">输入你的 DeepSeek API Key 来启用 AI 功能。Key 仅保存在你的浏览器本地，不会上传到任何服务器。</p>
+        <div class="form-group" style="margin-bottom:8px">
+          <label>DeepSeek API Key</label>
+          <div style="display:flex;gap:8px">
+            <input id="apiKeyInput" type="password" placeholder="sk-xxxxxxxxxxxxxxxx" value="${AI.getApiKey()}" style="flex:1;padding:10px 14px;border-radius:var(--radius-md);border:1px solid rgba(255,255,255,0.08);background:var(--bg-card);color:var(--text-primary);font-size:0.85rem;font-family:monospace;outline:none">
+            <button class="btn btn-sm btn-primary" onclick="App.saveApiKey()">保存</button>
+          </div>
+        </div>
+        <p style="font-size:0.7rem;color:var(--text-muted)">🔒 Key 存储在 localStorage，仅你可见 | <a href="https://platform.deepseek.com/api_keys" target="_blank" style="color:var(--accent-purple)">获取 API Key →</a></p>
+        ${AI.hasApiKey() ? '<p style="font-size:0.75rem;color:var(--accent-green);margin-top:6px">✅ 已配置 API Key</p>' : '<p style="font-size:0.75rem;color:var(--accent-amber);margin-top:6px">⚠️ 未配置 — AI 功能不可用</p>'}
+      </div>
+      <div class="card">
         <h3 style="margin-bottom:12px;font-size:1rem">💾 数据管理</h3>
         <p style="font-size:0.82rem;color:var(--text-secondary);margin-bottom:12px">总计 ${stats.total} 个单词</p>
         <button class="btn btn-sm btn-secondary" style="margin-right:8px;margin-bottom:8px" onclick="App.exportData()">📤 导出数据</button>
@@ -450,6 +463,14 @@ const App = (() => {
     if (!confirm('重新选择词库？已有的学习进度不会丢失。')) return;
     Storage.setSelectedBooks([]);
     renderSetupPage();
+  }
+
+  function saveApiKey() {
+    const key = document.getElementById('apiKeyInput')?.value?.trim();
+    if (!key) { showToast('请输入 API Key', 'error'); return; }
+    AI.setApiKey(key);
+    showToast('API Key 已保存！', 'success');
+    renderSettings();
   }
 
   function exportData() {
@@ -500,6 +521,17 @@ const App = (() => {
   let chatHistory = [];
 
   function renderAIChat() {
+    if (!AI.hasApiKey()) {
+      document.getElementById('page-ai').innerHTML = `
+        <div class="card" style="text-align:center;padding:32px 20px">
+          <div style="font-size:3rem;margin-bottom:12px">🔑</div>
+          <h3 style="margin-bottom:8px">需要配置 API Key</h3>
+          <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:16px">请先在设置中输入你的 DeepSeek API Key 来启用 AI 助手功能</p>
+          <button class="btn btn-primary" onclick="App.navigateTo('settings')">前往设置</button>
+          <p style="font-size:0.72rem;color:var(--text-muted);margin-top:12px"><a href="https://platform.deepseek.com/api_keys" target="_blank" style="color:var(--accent-purple)">没有 Key？去 DeepSeek 免费获取 →</a></p>
+        </div>`;
+      return;
+    }
     document.getElementById('page-ai').innerHTML = `
       <div class="card">
         <h3 style="margin-bottom:4px;font-size:1.1rem">🤖 AI 英语助手</h3>
@@ -611,7 +643,7 @@ const App = (() => {
   return {
     init, navigateTo, flipCard, rateWord, speak,
     onSearch, filterWords, showWordDetail, deleteWordAction,
-    submitWord, toggleSetting, resetBooks, exportData, importData, clearData,
+    submitWord, toggleSetting, resetBooks, saveApiKey, exportData, importData, clearData,
     showToast, sendChat, aiQuickAction, aiExplainWord
   };
 })();

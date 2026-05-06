@@ -1,20 +1,36 @@
 /**
  * FlowReview — DeepSeek AI Integration
- * Provides AI-powered features for vocabulary learning.
+ * API Key is stored in user's localStorage, never in source code.
  */
 
 const AI = (() => {
   const API_URL = 'https://api.deepseek.com/chat/completions';
-  const API_KEY = 'sk-a9e85ce8eb4545b98b5cf41ea0c1ef2f';
   const MODEL = 'deepseek-chat';
+  const STORAGE_KEY = 'flowreview_api_key';
+
+  function getApiKey() {
+    return localStorage.getItem(STORAGE_KEY) || '';
+  }
+
+  function setApiKey(key) {
+    localStorage.setItem(STORAGE_KEY, key.trim());
+  }
+
+  function hasApiKey() {
+    return !!getApiKey();
+  }
 
   async function chat(messages, maxTokens = 500) {
+    const apiKey = getApiKey();
+    if (!apiKey) {
+      throw new Error('NO_API_KEY');
+    }
     try {
       const res = await fetch(API_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${API_KEY}`
+          'Authorization': `Bearer ${apiKey}`
         },
         body: JSON.stringify({
           model: MODEL,
@@ -37,9 +53,6 @@ const AI = (() => {
     }
   }
 
-  /**
-   * Explain a word with usage, etymology, and memory tips.
-   */
   async function explainWord(word, definition) {
     return chat([
       {
@@ -56,25 +69,6 @@ const AI = (() => {
     ]);
   }
 
-  /**
-   * Generate a short quiz for a word.
-   */
-  async function generateQuiz(word, definition) {
-    return chat([
-      {
-        role: 'system',
-        content: '你是英语测试出题专家。生成简洁的选择题，用中文出题。直接输出题目，不要多余说明。'
-      },
-      {
-        role: 'user',
-        content: `为单词 "${word}"（${definition}）出一道选择题，4个选项，标注正确答案。`
-      }
-    ], 300);
-  }
-
-  /**
-   * Free conversation about English learning.
-   */
   async function freeChat(userMessage, history = []) {
     const messages = [
       {
@@ -87,5 +81,5 @@ const AI = (() => {
     return chat(messages, 400);
   }
 
-  return { explainWord, generateQuiz, freeChat };
+  return { explainWord, freeChat, getApiKey, setApiKey, hasApiKey };
 })();
