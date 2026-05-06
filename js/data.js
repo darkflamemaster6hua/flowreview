@@ -1,133 +1,26 @@
+/**
+ * FlowReview — Word Bank Data Module
+ * Loads vocabulary from external JSON files (CET-4: 7508, CET-6: 5651, TOEFL: 13477).
+ * Source: https://github.com/KyleBing/english-vocabulary (MIT)
+ */
+
 const WordBanks = {
   books: [
-    { id: 'cet4', name: 'CET-4 四级核心词汇', count: 40, icon: '📗' },
-    { id: 'cet6', name: 'CET-6 六级核心词汇', count: 40, icon: '📘' },
-    { id: 'toefl', name: 'TOEFL 托福核心词汇', count: 40, icon: '📙' }
+    { id: 'cet4', name: 'CET-4 四级', count: 7508, icon: '🎓', file: 'data/cet4.json' },
+    { id: 'cet6', name: 'CET-6 六级', count: 5651, icon: '📘', file: 'data/cet6.json' },
+    { id: 'toefl', name: 'TOEFL 托福', count: 13477, icon: '🌍', file: 'data/toefl.json' },
   ],
-  cet4: [
-    {word:"abandon",phonetic:"/əˈbændən/",definition:"v. 放弃；抛弃",partOfSpeech:"v",example:"He abandoned his car in the snow."},
-    {word:"absolute",phonetic:"/ˈæbsəluːt/",definition:"adj. 绝对的；完全的",partOfSpeech:"adj",example:"I have absolute confidence in you."},
-    {word:"absorb",phonetic:"/əbˈzɔːrb/",definition:"v. 吸收；吸引",partOfSpeech:"v",example:"Plants absorb carbon dioxide."},
-    {word:"abstract",phonetic:"/ˈæbstrækt/",definition:"adj. 抽象的 n. 摘要",partOfSpeech:"adj",example:"The concept is too abstract for children."},
-    {word:"abundant",phonetic:"/əˈbʌndənt/",definition:"adj. 丰富的；充裕的",partOfSpeech:"adj",example:"The country has abundant natural resources."},
-    {word:"accelerate",phonetic:"/əkˈseləreɪt/",definition:"v. 加速；促进",partOfSpeech:"v",example:"The car accelerated to 60 mph."},
-    {word:"accessible",phonetic:"/əkˈsesəbl/",definition:"adj. 可接近的；可使用的",partOfSpeech:"adj",example:"The building is accessible to wheelchairs."},
-    {word:"accommodate",phonetic:"/əˈkɒmədeɪt/",definition:"v. 容纳；适应",partOfSpeech:"v",example:"The hotel can accommodate 500 guests."},
-    {word:"accomplish",phonetic:"/əˈkɒmplɪʃ/",definition:"v. 完成；实现",partOfSpeech:"v",example:"She accomplished her goal."},
-    {word:"accumulate",phonetic:"/əˈkjuːmjəleɪt/",definition:"v. 积累；堆积",partOfSpeech:"v",example:"He accumulated a large fortune."},
-    {word:"accurate",phonetic:"/ˈækjərət/",definition:"adj. 精确的；准确的",partOfSpeech:"adj",example:"The data is very accurate."},
-    {word:"achieve",phonetic:"/əˈtʃiːv/",definition:"v. 达到；实现",partOfSpeech:"v",example:"She achieved her ambition."},
-    {word:"acknowledge",phonetic:"/əkˈnɒlɪdʒ/",definition:"v. 承认；感谢",partOfSpeech:"v",example:"He acknowledged his mistake."},
-    {word:"acquire",phonetic:"/əˈkwaɪər/",definition:"v. 获得；学到",partOfSpeech:"v",example:"She acquired a new skill."},
-    {word:"adequate",phonetic:"/ˈædɪkwət/",definition:"adj. 足够的；适当的",partOfSpeech:"adj",example:"The supply is adequate for our needs."},
-    {word:"adjust",phonetic:"/əˈdʒʌst/",definition:"v. 调整；适应",partOfSpeech:"v",example:"You need to adjust the volume."},
-    {word:"administration",phonetic:"/ədˌmɪnɪˈstreɪʃn/",definition:"n. 管理；行政",partOfSpeech:"n",example:"The administration announced new policies."},
-    {word:"adolescent",phonetic:"/ˌædəˈlesnt/",definition:"n. 青少年 adj. 青春期的",partOfSpeech:"n",example:"Adolescents face many challenges."},
-    {word:"advocate",phonetic:"/ˈædvəkeɪt/",definition:"v. 提倡；拥护 n. 拥护者",partOfSpeech:"v",example:"She advocates for human rights."},
-    {word:"afford",phonetic:"/əˈfɔːrd/",definition:"v. 负担得起；提供",partOfSpeech:"v",example:"I can't afford a new car."},
-    {word:"aggressive",phonetic:"/əˈɡresɪv/",definition:"adj. 侵略的；有进取心的",partOfSpeech:"adj",example:"He has an aggressive attitude."},
-    {word:"allowance",phonetic:"/əˈlaʊəns/",definition:"n. 津贴；零用钱",partOfSpeech:"n",example:"She gets a monthly allowance."},
-    {word:"alternative",phonetic:"/ɔːlˈtɜːrnətɪv/",definition:"n. 替代品 adj. 替代的",partOfSpeech:"n",example:"We have no alternative but to wait."},
-    {word:"ambiguous",phonetic:"/æmˈbɪɡjuəs/",definition:"adj. 模糊的；含混的",partOfSpeech:"adj",example:"The statement is ambiguous."},
-    {word:"anticipate",phonetic:"/ænˈtɪsɪpeɪt/",definition:"v. 预期；期望",partOfSpeech:"v",example:"We anticipate a good result."},
-    {word:"apparent",phonetic:"/əˈpærənt/",definition:"adj. 明显的；表面的",partOfSpeech:"adj",example:"The reason is apparent to everyone."},
-    {word:"appealing",phonetic:"/əˈpiːlɪŋ/",definition:"adj. 有吸引力的",partOfSpeech:"adj",example:"The idea is very appealing."},
-    {word:"appliance",phonetic:"/əˈplaɪəns/",definition:"n. 器具；家电",partOfSpeech:"n",example:"Kitchen appliances make cooking easier."},
-    {word:"appropriate",phonetic:"/əˈprəʊpriət/",definition:"adj. 适当的；恰当的",partOfSpeech:"adj",example:"This dress is appropriate for the occasion."},
-    {word:"arbitrary",phonetic:"/ˈɑːrbɪtreri/",definition:"adj. 任意的；武断的",partOfSpeech:"adj",example:"The decision was arbitrary."},
-    {word:"architecture",phonetic:"/ˈɑːrkɪtektʃər/",definition:"n. 建筑学；体系结构",partOfSpeech:"n",example:"Modern architecture is fascinating."},
-    {word:"arouse",phonetic:"/əˈraʊz/",definition:"v. 唤起；激起",partOfSpeech:"v",example:"The speech aroused great interest."},
-    {word:"artificial",phonetic:"/ˌɑːrtɪˈfɪʃl/",definition:"adj. 人工的；虚假的",partOfSpeech:"adj",example:"Artificial intelligence is evolving fast."},
-    {word:"assess",phonetic:"/əˈses/",definition:"v. 评估；评定",partOfSpeech:"v",example:"We need to assess the damage."},
-    {word:"assign",phonetic:"/əˈsaɪn/",definition:"v. 分配；指派",partOfSpeech:"v",example:"The teacher assigned homework."},
-    {word:"assumption",phonetic:"/əˈsʌmpʃn/",definition:"n. 假设；承担",partOfSpeech:"n",example:"Your assumption is incorrect."},
-    {word:"atmosphere",phonetic:"/ˈætməsfɪr/",definition:"n. 大气层；气氛",partOfSpeech:"n",example:"The atmosphere was tense."},
-    {word:"attach",phonetic:"/əˈtætʃ/",definition:"v. 附上；系；贴",partOfSpeech:"v",example:"Please attach a photo to the form."},
-    {word:"attain",phonetic:"/əˈteɪn/",definition:"v. 达到；获得",partOfSpeech:"v",example:"She attained the highest score."},
-    {word:"attribute",phonetic:"/əˈtrɪbjuːt/",definition:"v. 归因于 n. 属性",partOfSpeech:"v",example:"He attributed his success to hard work."}
-  ],
-  cet6: [
-    {word:"abolish",phonetic:"/əˈbɒlɪʃ/",definition:"v. 废除；废止",partOfSpeech:"v",example:"They voted to abolish the tax."},
-    {word:"abrupt",phonetic:"/əˈbrʌpt/",definition:"adj. 突然的；唐突的",partOfSpeech:"adj",example:"There was an abrupt change in the weather."},
-    {word:"absurd",phonetic:"/əbˈsɜːrd/",definition:"adj. 荒谬的；可笑的",partOfSpeech:"adj",example:"The idea is absolutely absurd."},
-    {word:"acclaim",phonetic:"/əˈkleɪm/",definition:"v. 称赞 n. 赞扬",partOfSpeech:"v",example:"The film was critically acclaimed."},
-    {word:"adverse",phonetic:"/ˈædvɜːrs/",definition:"adj. 不利的；有害的",partOfSpeech:"adj",example:"Adverse weather conditions delayed the flight."},
-    {word:"aesthetic",phonetic:"/esˈθetɪk/",definition:"adj. 审美的；美学的",partOfSpeech:"adj",example:"The building has great aesthetic appeal."},
-    {word:"affiliate",phonetic:"/əˈfɪlieɪt/",definition:"v. 使隶属 n. 分支机构",partOfSpeech:"v",example:"The company is affiliated with a larger group."},
-    {word:"aggravate",phonetic:"/ˈæɡrəveɪt/",definition:"v. 加重；恶化；激怒",partOfSpeech:"v",example:"Don't aggravate the situation."},
-    {word:"agony",phonetic:"/ˈæɡəni/",definition:"n. 极度痛苦",partOfSpeech:"n",example:"She was in agony after the injury."},
-    {word:"allegation",phonetic:"/ˌæləˈɡeɪʃn/",definition:"n. 指控；声称",partOfSpeech:"n",example:"He denied the allegations."},
-    {word:"alleviate",phonetic:"/əˈliːvieɪt/",definition:"v. 减轻；缓和",partOfSpeech:"v",example:"Medicine can alleviate the pain."},
-    {word:"analogy",phonetic:"/əˈnælədʒi/",definition:"n. 类比；类推",partOfSpeech:"n",example:"He drew an analogy between life and a journey."},
-    {word:"anonymous",phonetic:"/əˈnɒnɪməs/",definition:"adj. 匿名的",partOfSpeech:"adj",example:"The donor wished to remain anonymous."},
-    {word:"apparatus",phonetic:"/ˌæpəˈreɪtəs/",definition:"n. 器械；装置",partOfSpeech:"n",example:"The laboratory apparatus is expensive."},
-    {word:"appetite",phonetic:"/ˈæpɪtaɪt/",definition:"n. 食欲；欲望",partOfSpeech:"n",example:"Exercise gives you a good appetite."},
-    {word:"arbitrary",phonetic:"/ˈɑːrbɪtreri/",definition:"adj. 任意的；专横的",partOfSpeech:"adj",example:"The selection seemed arbitrary."},
-    {word:"articulate",phonetic:"/ɑːrˈtɪkjəleɪt/",definition:"v. 清晰地说 adj. 善于表达的",partOfSpeech:"v",example:"She articulated her views clearly."},
-    {word:"aspire",phonetic:"/əˈspaɪər/",definition:"v. 渴望；追求",partOfSpeech:"v",example:"She aspires to be a doctor."},
-    {word:"assertive",phonetic:"/əˈsɜːrtɪv/",definition:"adj. 果断的；自信的",partOfSpeech:"adj",example:"Be more assertive in meetings."},
-    {word:"authentic",phonetic:"/ɔːˈθentɪk/",definition:"adj. 真正的；可靠的",partOfSpeech:"adj",example:"Is this painting authentic?"},
-    {word:"autonomous",phonetic:"/ɔːˈtɒnəməs/",definition:"adj. 自治的；自主的",partOfSpeech:"adj",example:"The region became autonomous."},
-    {word:"avert",phonetic:"/əˈvɜːrt/",definition:"v. 避免；转移",partOfSpeech:"v",example:"We must avert disaster."},
-    {word:"benevolent",phonetic:"/bəˈnevələnt/",definition:"adj. 仁慈的；慈善的",partOfSpeech:"adj",example:"She was a benevolent ruler."},
-    {word:"bias",phonetic:"/ˈbaɪəs/",definition:"n. 偏见；偏差 v. 使有偏见",partOfSpeech:"n",example:"The report showed a clear bias."},
-    {word:"bizarre",phonetic:"/bɪˈzɑːr/",definition:"adj. 奇异的；古怪的",partOfSpeech:"adj",example:"The story is quite bizarre."},
-    {word:"blunder",phonetic:"/ˈblʌndər/",definition:"n. 大错 v. 犯大错",partOfSpeech:"n",example:"He made a terrible blunder."},
-    {word:"breach",phonetic:"/briːtʃ/",definition:"n. 违反；缺口 v. 违反",partOfSpeech:"n",example:"This is a breach of contract."},
-    {word:"bureaucracy",phonetic:"/bjʊˈrɒkrəsi/",definition:"n. 官僚主义；官僚机构",partOfSpeech:"n",example:"The bureaucracy slows everything down."},
-    {word:"candid",phonetic:"/ˈkændɪd/",definition:"adj. 坦率的；直言的",partOfSpeech:"adj",example:"She gave a candid interview."},
-    {word:"catastrophe",phonetic:"/kəˈtæstrəfi/",definition:"n. 灾难；大祸",partOfSpeech:"n",example:"The earthquake was a catastrophe."},
-    {word:"chronic",phonetic:"/ˈkrɒnɪk/",definition:"adj. 慢性的；长期的",partOfSpeech:"adj",example:"He suffers from chronic back pain."},
-    {word:"coherent",phonetic:"/kəʊˈhɪərənt/",definition:"adj. 连贯的；一致的",partOfSpeech:"adj",example:"She presented a coherent argument."},
-    {word:"collaborate",phonetic:"/kəˈlæbəreɪt/",definition:"v. 合作；协作",partOfSpeech:"v",example:"The two companies collaborated on the project."},
-    {word:"compel",phonetic:"/kəmˈpel/",definition:"v. 强迫；迫使",partOfSpeech:"v",example:"Nothing can compel me to do it."},
-    {word:"compensate",phonetic:"/ˈkɒmpenseɪt/",definition:"v. 补偿；赔偿",partOfSpeech:"v",example:"The company compensated the victims."},
-    {word:"compelling",phonetic:"/kəmˈpelɪŋ/",definition:"adj. 引人注目的；令人信服的",partOfSpeech:"adj",example:"She told a compelling story."},
-    {word:"compatible",phonetic:"/kəmˈpætəbl/",definition:"adj. 兼容的；合得来的",partOfSpeech:"adj",example:"The software is compatible with Windows."},
-    {word:"comprehensive",phonetic:"/ˌkɒmprɪˈhensɪv/",definition:"adj. 全面的；综合的",partOfSpeech:"adj",example:"We need a comprehensive plan."},
-    {word:"compulsory",phonetic:"/kəmˈpʌlsəri/",definition:"adj. 强制的；义务的",partOfSpeech:"adj",example:"Education is compulsory for all children."},
-    {word:"conceive",phonetic:"/kənˈsiːv/",definition:"v. 构想；怀孕",partOfSpeech:"v",example:"I cannot conceive of such a thing."}
-  ],
-  toefl: [
-    {word:"aberration",phonetic:"/ˌæbəˈreɪʃn/",definition:"n. 偏差；异常行为",partOfSpeech:"n",example:"This event is an aberration."},
-    {word:"accolade",phonetic:"/ˈækəleɪd/",definition:"n. 荣誉；赞美",partOfSpeech:"n",example:"She received the highest accolade."},
-    {word:"adept",phonetic:"/əˈdept/",definition:"adj. 熟练的；内行的",partOfSpeech:"adj",example:"She is adept at solving problems."},
-    {word:"adversity",phonetic:"/ədˈvɜːrsəti/",definition:"n. 逆境；不幸",partOfSpeech:"n",example:"He showed courage in adversity."},
-    {word:"affinity",phonetic:"/əˈfɪnəti/",definition:"n. 密切关系；喜好",partOfSpeech:"n",example:"She has an affinity for music."},
-    {word:"amalgamate",phonetic:"/əˈmælɡəmeɪt/",definition:"v. 合并；混合",partOfSpeech:"v",example:"The two companies amalgamated."},
-    {word:"ambivalent",phonetic:"/æmˈbɪvələnt/",definition:"adj. 矛盾的；犹豫不决的",partOfSpeech:"adj",example:"She felt ambivalent about the decision."},
-    {word:"ameliorate",phonetic:"/əˈmiːliəreɪt/",definition:"v. 改善；改良",partOfSpeech:"v",example:"Steps were taken to ameliorate the situation."},
-    {word:"anomaly",phonetic:"/əˈnɒməli/",definition:"n. 异常；不规则",partOfSpeech:"n",example:"Scientists detected an anomaly in the data."},
-    {word:"antiquated",phonetic:"/ˈæntɪkweɪtɪd/",definition:"adj. 过时的；陈旧的",partOfSpeech:"adj",example:"The equipment is antiquated."},
-    {word:"apathy",phonetic:"/ˈæpəθi/",definition:"n. 冷漠；无兴趣",partOfSpeech:"n",example:"Voter apathy is a serious problem."},
-    {word:"arbitrary",phonetic:"/ˈɑːrbɪtreri/",definition:"adj. 任意的；武断的",partOfSpeech:"adj",example:"The rules seem arbitrary."},
-    {word:"arduous",phonetic:"/ˈɑːrdjuəs/",definition:"adj. 艰巨的；费力的",partOfSpeech:"adj",example:"It was an arduous journey."},
-    {word:"benign",phonetic:"/bɪˈnaɪn/",definition:"adj. 良性的；和善的",partOfSpeech:"adj",example:"The tumor was benign."},
-    {word:"bolster",phonetic:"/ˈbəʊlstər/",definition:"v. 支持；增强",partOfSpeech:"v",example:"New evidence bolstered his claim."},
-    {word:"brevity",phonetic:"/ˈbrevəti/",definition:"n. 简洁；短暂",partOfSpeech:"n",example:"Brevity is the soul of wit."},
-    {word:"capricious",phonetic:"/kəˈprɪʃəs/",definition:"adj. 变化无常的；任性的",partOfSpeech:"adj",example:"The weather is capricious here."},
-    {word:"catalyst",phonetic:"/ˈkætəlɪst/",definition:"n. 催化剂；促进因素",partOfSpeech:"n",example:"The event was a catalyst for change."},
-    {word:"circumvent",phonetic:"/ˌsɜːrkəmˈvent/",definition:"v. 规避；绕过",partOfSpeech:"v",example:"They tried to circumvent the rules."},
-    {word:"coalesce",phonetic:"/ˌkəʊəˈles/",definition:"v. 合并；联合",partOfSpeech:"v",example:"The ideas coalesced into a plan."},
-    {word:"cognizant",phonetic:"/ˈkɒɡnɪzənt/",definition:"adj. 认识到的；意识到的",partOfSpeech:"adj",example:"She was cognizant of the risks."},
-    {word:"commensurate",phonetic:"/kəˈmenʃərət/",definition:"adj. 相称的；相当的",partOfSpeech:"adj",example:"The salary is commensurate with experience."},
-    {word:"congenial",phonetic:"/kənˈdʒiːniəl/",definition:"adj. 意气相投的；宜人的",partOfSpeech:"adj",example:"The atmosphere was congenial."},
-    {word:"conjecture",phonetic:"/kənˈdʒektʃər/",definition:"n./v. 推测；猜测",partOfSpeech:"n",example:"That is mere conjecture."},
-    {word:"copious",phonetic:"/ˈkəʊpiəs/",definition:"adj. 大量的；丰富的",partOfSpeech:"adj",example:"She took copious notes."},
-    {word:"corroborate",phonetic:"/kəˈrɒbəreɪt/",definition:"v. 证实；确证",partOfSpeech:"v",example:"The witness corroborated his story."},
-    {word:"debilitate",phonetic:"/dɪˈbɪlɪteɪt/",definition:"v. 使衰弱；使虚弱",partOfSpeech:"v",example:"The disease debilitated him."},
-    {word:"deleterious",phonetic:"/ˌdelɪˈtɪəriəs/",definition:"adj. 有害的；有毒的",partOfSpeech:"adj",example:"Smoking has deleterious effects on health."},
-    {word:"delineate",phonetic:"/dɪˈlɪnieɪt/",definition:"v. 描述；划定",partOfSpeech:"v",example:"The report delineates the problem clearly."},
-    {word:"dichotomy",phonetic:"/daɪˈkɒtəmi/",definition:"n. 二分法；对立",partOfSpeech:"n",example:"There is a dichotomy between theory and practice."},
-    {word:"disparate",phonetic:"/ˈdɪspərət/",definition:"adj. 不同的；不相关的",partOfSpeech:"adj",example:"The two cultures are quite disparate."},
-    {word:"disseminate",phonetic:"/dɪˈsemɪneɪt/",definition:"v. 传播；散布",partOfSpeech:"v",example:"The internet helps disseminate information."},
-    {word:"ebullient",phonetic:"/ɪˈbʊliənt/",definition:"adj. 热情洋溢的",partOfSpeech:"adj",example:"She was in an ebullient mood."},
-    {word:"elicit",phonetic:"/ɪˈlɪsɪt/",definition:"v. 引出；诱出",partOfSpeech:"v",example:"The question elicited a surprising response."},
-    {word:"eloquent",phonetic:"/ˈeləkwənt/",definition:"adj. 雄辩的；有说服力的",partOfSpeech:"adj",example:"She gave an eloquent speech."},
-    {word:"empirical",phonetic:"/ɪmˈpɪrɪkl/",definition:"adj. 经验的；实证的",partOfSpeech:"adj",example:"The theory lacks empirical evidence."},
-    {word:"enigmatic",phonetic:"/ˌenɪɡˈmætɪk/",definition:"adj. 神秘的；费解的",partOfSpeech:"adj",example:"She gave an enigmatic smile."},
-    {word:"ephemeral",phonetic:"/ɪˈfemərəl/",definition:"adj. 短暂的；转瞬即逝的",partOfSpeech:"adj",example:"Fame is often ephemeral."},
-    {word:"equivocal",phonetic:"/ɪˈkwɪvəkl/",definition:"adj. 模棱两可的；含糊的",partOfSpeech:"adj",example:"His answer was equivocal."},
-    {word:"exacerbate",phonetic:"/ɪɡˈzæsərbeɪt/",definition:"v. 使加剧；使恶化",partOfSpeech:"v",example:"The treatment only exacerbated the problem."}
-  ]
+
+  /**
+   * Load a word bank JSON file asynchronously.
+   * Returns array of { word, definition, example, exampleTrans }.
+   */
+  async load(bookId) {
+    const book = this.books.find(b => b.id === bookId);
+    if (!book) throw new Error(`Unknown book: ${bookId}`);
+
+    const res = await fetch(book.file);
+    if (!res.ok) throw new Error(`Failed to load ${book.file}`);
+    return res.json();
+  }
 };

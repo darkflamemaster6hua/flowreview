@@ -43,17 +43,26 @@ const App = (() => {
       div.onclick = () => { div.classList.toggle('selected'); document.getElementById('startBtn').disabled = !document.querySelector('.book-option.selected'); };
       grid.appendChild(div);
     });
-    document.getElementById('startBtn').onclick = () => {
+    document.getElementById('startBtn').onclick = async () => {
       const selected = [...document.querySelectorAll('.book-option.selected')].map(el => el.dataset.id);
       if (!selected.length) return;
+      const btn = document.getElementById('startBtn');
+      btn.disabled = true;
+      btn.textContent = '⏳ 正在加载词库...';
       Storage.setSelectedBooks(selected);
-      selected.forEach(id => {
-        const words = WordBanks[id];
-        if (words) Storage.importWords(words, id);
-      });
-      showToast('词库导入成功！', 'success');
-      renderApp();
-      navigateTo('dashboard');
+      try {
+        for (const id of selected) {
+          const words = await WordBanks.load(id);
+          Storage.importWords(words, id);
+        }
+        showToast('词库导入成功！', 'success');
+        renderApp();
+        navigateTo('dashboard');
+      } catch (e) {
+        btn.disabled = false;
+        btn.textContent = '开始学习';
+        showToast('词库加载失败，请检查网络', 'error');
+      }
     };
   }
 
@@ -213,7 +222,7 @@ const App = (() => {
             <div class="flashcard-face flashcard-back">
               <div class="flashcard-pos">${word.partOfSpeech || ''}</div>
               <div class="flashcard-definition">${word.definition}</div>
-              ${word.example ? `<div class="flashcard-example">"${word.example}"</div>` : ''}
+              ${word.example ? `<div class="flashcard-example">"${word.example}"${word.exampleTrans ? `<div style="font-size:0.78rem;color:var(--text-muted);margin-top:4px">${word.exampleTrans}</div>` : ''}</div>` : ''}
             </div>
           </div>
         </div>
@@ -327,7 +336,7 @@ const App = (() => {
       <h3 style="display:flex;align-items:center;gap:8px"><span class="mastery-dot" style="background:${m.color}"></span>${w.word}</h3>
       ${w.phonetic ? `<p style="color:var(--text-secondary);margin-bottom:8px">${w.phonetic}</p>` : ''}
       <p style="margin-bottom:8px">${w.definition}</p>
-      ${w.example ? `<p style="font-size:0.85rem;color:var(--text-secondary);font-style:italic;margin-bottom:12px">"${w.example}"</p>` : ''}
+      ${w.example ? `<p style="font-size:0.85rem;color:var(--text-secondary);font-style:italic;margin-bottom:4px">"${w.example}"</p>${w.exampleTrans ? `<p style="font-size:0.78rem;color:var(--text-muted);margin-bottom:12px">${w.exampleTrans}</p>` : ''}` : ''}
       <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:4px">状态：${m.label} | 复习次数：${w.totalReviews||0} | 下次复习：${SRS.getNextReviewText(w)}</div>
       <div style="font-size:0.78rem;color:var(--text-muted)">词库：${w.book || '自定义'}</div>
       <div class="modal-actions" style="flex-wrap:wrap">
@@ -371,14 +380,24 @@ const App = (() => {
       const btn = document.createElement('button');
       btn.className = 'btn btn-secondary btn-block';
       btn.style.marginBottom = '8px';
-      btn.textContent = `${book.icon} ${book.name}`;
-      btn.onclick = () => {
-        const added = Storage.importWords(WordBanks[book.id], book.id);
-        if (!selected.includes(book.id)) {
-          selected.push(book.id);
-          Storage.setSelectedBooks(selected);
+      btn.textContent = `${book.icon} ${book.name} (${book.count}词)`;
+      btn.onclick = async () => {
+        btn.disabled = true;
+        btn.textContent = `⏳ 正在加载 ${book.name}...`;
+        try {
+          const words = await WordBanks.load(book.id);
+          const added = Storage.importWords(words, book.id);
+          if (!selected.includes(book.id)) {
+            selected.push(book.id);
+            Storage.setSelectedBooks(selected);
+          }
+          btn.textContent = `✅ ${book.icon} ${book.name} (已导入)`;
+          showToast(`已导入 ${added} 个新单词`, 'success');
+        } catch (e) {
+          btn.disabled = false;
+          btn.textContent = `${book.icon} ${book.name} (${book.count}词)`;
+          showToast('加载失败，请重试', 'error');
         }
-        showToast(`已导入 ${added} 个新单词`, 'success');
       };
       importDiv.appendChild(btn);
     });
