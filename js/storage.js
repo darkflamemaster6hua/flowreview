@@ -118,11 +118,20 @@ const Storage = (() => {
     });
 
     // Sort: new words first, then by next review date (oldest first)
-    due.sort((a, b) => {
-      if (a.repetitions === 0 && b.repetitions !== 0) return -1;
-      if (a.repetitions !== 0 && b.repetitions === 0) return 1;
-      return new Date(a.nextReviewDate || 0) - new Date(b.nextReviewDate || 0);
-    });
+    const settings = getSettings();
+    if (settings.reviewOrder === 'random') {
+      // Fisher-Yates shuffle
+      for (let i = due.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [due[i], due[j]] = [due[j], due[i]];
+      }
+    } else {
+      due.sort((a, b) => {
+        if (a.repetitions === 0 && b.repetitions !== 0) return -1;
+        if (a.repetitions !== 0 && b.repetitions === 0) return 1;
+        return new Date(a.nextReviewDate || 0) - new Date(b.nextReviewDate || 0);
+      });
+    }
 
     return limit ? due.slice(0, limit) : due;
   }

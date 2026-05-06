@@ -447,6 +447,13 @@ const App = (() => {
           <div><div class="setting-label">显示音标</div></div>
           <button class="toggle ${settings.showPhonetic?'on':''}" onclick="App.toggleSetting('showPhonetic',this)"></button>
         </div>
+        <div class="setting-item" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+          <div><div class="setting-label">复习顺序</div><div class="setting-desc">推荐优先复习到期单词</div></div>
+          <select style="background:var(--bg-card); color:var(--text-primary); border:1px solid rgba(255,255,255,0.1); padding:6px 12px; border-radius:var(--radius-sm); outline:none;" onchange="App.changeReviewOrder(this.value)">
+            <option value="due_first" ${settings.reviewOrder === 'due_first' || !settings.reviewOrder ? 'selected' : ''}>优先到期 (顺序)</option>
+            <option value="random" ${settings.reviewOrder === 'random' ? 'selected' : ''}>完全乱序</option>
+          </select>
+        </div>
       </div>
       <div class="card">
         <h3 style="margin-bottom:4px;font-size:1rem">🤖 AI 助手设置</h3>
@@ -476,6 +483,13 @@ const App = (() => {
     settings[key] = !settings[key];
     Storage.updateSettings(settings);
     el.classList.toggle('on');
+  }
+
+  function changeReviewOrder(order) {
+    const settings = Storage.getSettings();
+    settings.reviewOrder = order;
+    Storage.updateSettings(settings);
+    showToast('复习顺序已保存');
   }
 
   function resetBooks() {
@@ -662,7 +676,7 @@ const App = (() => {
   return {
     init, navigateTo, flipCard, rateWord, speak,
     onSearch, filterWords, showWordDetail, deleteWordAction,
-    submitWord, toggleSetting, resetBooks, saveApiKey, exportData, importData, clearData,
+    submitWord, toggleSetting, changeReviewOrder, resetBooks, saveApiKey, exportData, importData, clearData,
     showToast, sendChat, aiQuickAction, aiExplainWord
   };
 })();

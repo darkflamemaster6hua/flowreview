@@ -1,4 +1,4 @@
-const CACHE_NAME = 'flowreview-v2';
+const CACHE_NAME = 'flowreview-v3';
 const ASSETS = [
   './',
   './index.html',
