@@ -6,6 +6,13 @@ const App = (() => {
   let isFlipped = false;
 
   function init() {
+    const totalWords = Storage.getAllWords().length;
+    // Auto-wipe if using the old test datasets (which had 40 or 120 words)
+    if (Storage.hasCompletedSetup() && totalWords <= 120) {
+      Storage.clearAllData();
+      alert('检测到旧版测试词库，已自动清理！请重新选择完整版词库（包含两万多单词）。');
+    }
+
     if (!Storage.hasCompletedSetup()) {
       renderSetupPage();
     } else {
