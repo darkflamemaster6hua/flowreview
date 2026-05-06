@@ -548,13 +548,31 @@ const App = (() => {
   }
 
   // ── Speech ──
+  const _audioPlayer = new Audio();
+
   function speak(text) {
-    if (!('speechSynthesis' in window)) return;
-    window.speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = 'en-US';
-    u.rate = 0.9;
-    window.speechSynthesis.speak(u);
+    if (!text) return;
+    
+    // 如果是长句子，或者是有道API播放失败，则使用系统自带TTS
+    const fallbackTTS = () => {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'en-US';
+      u.rate = 0.9;
+      window.speechSynthesis.speak(u);
+    };
+
+    // 如果是单词（不包含太多空格），优先使用有道词典真人发音API (type=2 为美音)
+    if (text.split(' ').length <= 3) {
+      _audioPlayer.src = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(text)}&type=2`;
+      _audioPlayer.play().catch(e => {
+        console.warn('Audio API failed, using fallback TTS:', e);
+        fallbackTTS();
+      });
+    } else {
+      fallbackTTS();
+    }
   }
 
   // ── AI Chat ──
